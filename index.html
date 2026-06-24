@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Produtividade MeliAir — Casterdeck MLM</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --yellow:#FFF8DC;
+  --yellow-mid:#F5E97A;
+  --yellow-dark:#E8D98A;
+  --yellow-light:#FFFDF0;
+  --blue:#2C3E6B;
+  --blue-dark:#1E2D52;
+  --blue-deeper:#15203D;
+  --blue-light:#EEF2FF;
+  --blue-mid:#C5CFEA;
+  --dark:#1A1A2E;
+  --text:#333;
+  --gray:#717171;
+  --gray-light:#F5F5F5;
+  --border:#EBEBEB;
+  --white:#fff;
+  --green:#2E7D5E;
+  --green-light:#E8F5EE;
+  --orange:#C4631A;
+  --orange-light:#FDF0E6;
+  --purple:#5B3AA8;
+  --purple-light:#EEE8FA;
+}
+body{font-family:'Inter',sans-serif;background:#EDEAE3;color:var(--text);min-height:100vh}
+header{background:var(--yellow);height:60px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--yellow-dark)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:20px;height:20px}
+.logo-name{font-family:'Raleway',sans-serif;font-weight:800;font-size:17px;color:var(--blue-deeper)}
+.logo-sub{font-size:10px;font-weight:600;color:var(--blue-dark);letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:8px}
+.btn-back,.lang-link{font-size:12px;font-weight:600;color:var(--blue-deeper);text-decoration:none;background:rgba(255,255,255,0.7);padding:4px 12px;border-radius:20px;border:1px solid var(--yellow-dark);transition:background .15s}
+.btn-back:hover,.lang-link:hover{background:white}
+.badge{background:var(--blue);color:var(--yellow-mid);font-family:'Raleway',sans-serif;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.hero{background:var(--yellow);padding:2.5rem 2rem 2rem;text-align:center;border-bottom:2px solid var(--yellow-dark)}
+.hero-tag{display:inline-block;background:var(--blue);color:var(--yellow-mid);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.hero-title-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.hero-ml-icon{width:46px;height:46px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-ml-icon svg{width:26px;height:26px}
+.hero h1{font-family:'Raleway',sans-serif;font-size:clamp(20px,3vw,34px);font-weight:800;color:var(--blue-deeper);letter-spacing:-0.8px;line-height:1.2}
+.container{max-width:1180px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.layout{display:grid;grid-template-columns:1fr 440px;gap:20px;align-items:start}
+@media(max-width:960px){.layout{grid-template-columns:1fr}}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--border)}
+.card+.card{margin-top:16px}
+.card-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-icon{width:32px;height:32px;background:var(--yellow-light);border:1px solid var(--yellow-dark);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.card-header h2{font-family:'Raleway',sans-serif;font-size:14px;font-weight:700;color:var(--dark)}
+.card-header p{font-size:11px;color:var(--gray);margin-top:1px}
+.card-body{padding:1.25rem}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;margin-top:4px}
+.divider{border:none;border-top:1px solid var(--border);margin:.9rem 0}
+.field{margin-bottom:.9rem}
+.field:last-child{margin-bottom:0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px}
+label .hint{font-weight:400;color:var(--gray)}
+input[type="number"]{width:100%;height:38px;border:1.5px solid var(--border);border-radius:8px;padding:0 10px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+input[type="number"]:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(44,62,107,.1)}
+.results-sticky{position:sticky;top:76px}
+.result-header{background:var(--blue);padding:1.25rem 1.5rem;border-radius:12px 12px 0 0}
+.result-header .r-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.result-header .r-title{font-family:'Raleway',sans-serif;font-size:15px;font-weight:700;color:var(--yellow-mid)}
+.res-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:.9rem 1.25rem;border-bottom:1px solid var(--border)}
+.kpi{background:var(--gray-light);border-radius:8px;padding:9px 10px;text-align:center}
+.kpi.hl{background:var(--blue)}
+.kpi-val{font-family:'Raleway',sans-serif;font-size:22px;font-weight:800;color:var(--blue);line-height:1}
+.kpi.hl .kpi-val{color:var(--yellow-mid)}
+.kpi-lbl{font-size:9px;color:var(--gray);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+.kpi.hl .kpi-lbl{color:rgba(255,255,255,.6)}
+.res-table-wrap{padding:.75rem 1.25rem;overflow-x:auto}
+.res-table{width:100%;border-collapse:collapse;font-size:11px}
+.res-table th{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);padding:5px 6px;border-bottom:2px solid var(--border);text-align:right;white-space:nowrap}
+.res-table th:first-child{text-align:left}
+.res-table td{padding:6px 6px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+.res-table td:first-child{font-weight:600;color:var(--dark);font-size:11px}
+.res-table td:not(:first-child){text-align:right;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700}
+.res-table tr:last-child td{border-bottom:none}
+.res-table tr.group-hdr td{background:var(--gray-light);font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue);padding:5px 6px;font-family:'Inter',sans-serif}
+.res-table tr:hover td{background:var(--blue-light)}
+.res-table tr.group-hdr:hover td{background:var(--gray-light)}
+.empty-state{padding:2.5rem 1.5rem;text-align:center;color:var(--gray)}
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty-state p{font-size:13px;line-height:1.6}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.animate{animation:fadeUp .22s ease forwards}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6.5" r="3.5" fill="#F5E97A"/><path d="M2.5 17.5c0-4.142 3.358-7.5 7.5-7.5s7.5 3.358 7.5 7.5" stroke="#F5E97A" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </div>
+    <div><div class="logo-name">Mercado Livre</div><div class="logo-sub">Ferramentas Internas</div></div>
+  </a>
+  <div class="header-right">
+    <a class="btn-back" href="https://mtmtransportes-meliairlinehaulpt.vercel.app/">← Voltar</a>
+    <a class="lang-link" href="meliair-casterdeck-mlm-es.html">🇲🇽 Español</a>
+    <span class="badge">MTM — Produtividade MeliAir</span>
+  </div>
+</header>
+<div class="hero">
+  <div class="hero-tag">Produtividade Operacional · MeliAir · 🇲🇽 México</div>
+  <div class="hero-title-wrap">
+    <div class="hero-ml-icon">
+      <svg viewBox="0 0 26 26" fill="none"><path d="M3 13 L23 13" stroke="#F5E97A" stroke-width="2" stroke-linecap="round"/><path d="M14 6 L23 13 L14 20" stroke="#F5E97A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 9 L11 13 L8 17" stroke="#F5E97A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1>Calculadora de Produtividade MeliAir</h1>
+  </div>
+</div>
+<div class="container">
+<div class="layout">
+<div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">📋</div>
+    <div><h2>Dados de Operação</h2><p>Parâmetros do ciclo Casterdeck (MLM) — carga de avião a partir de caminhão via casterdeck</p></div>
+  </div>
+  <div class="card-body">
+    <div class="sec-label">Volume e Capacidades</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Pacotes por caminhão <span class="hint">(pcts)</span></label>
+        <input type="number" id="ppcam" min="100" oninput="calcular()">
+      </div>
+      <div class="field">
+        <label>SPP Gaylord <span class="hint">(pcts/gaylord)</span></label>
+        <input type="number" id="sppGaylord" min="1" oninput="calcular()">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="sec-label">Distâncias</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Dist. docas → buffer otimização <span class="hint">(m)</span></label>
+        <input type="number" id="distBuffer" min="1" oninput="calcular()">
+      </div>
+      <div class="field">
+        <label>Dist. gaylords → casterdecks <span class="hint">(m)</span></label>
+        <input type="number" id="distCast" min="1" oninput="calcular()">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="sec-label">Granéis e Ocupação</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Pcts granel sobre gaylord <span class="hint">(pcts/lâm)</span></label>
+        <input type="number" id="sppGG" min="1" oninput="calcular()">
+      </div>
+      <div class="field">
+        <label>Pcts granel lâmina <span class="hint">(pcts/lâm)</span></label>
+        <input type="number" id="sppGL" min="1" oninput="calcular()">
+      </div>
+    </div>
+    <div class="field">
+      <label>Ocupação do gaylord recepção <span class="hint">(%)</span></label>
+      <input type="number" id="occ" min="0" max="100" step="1" oninput="calcular()">
+    </div>
+  </div>
+</div>
+</div>
+<div class="results-sticky">
+  <div class="card">
+    <div class="result-header">
+      <div class="r-label">Produtividade por Subprocesso</div>
+      <div class="r-title">MeliAir — Casterdeck · 🇲🇽 México</div>
+    </div>
+    <div class="res-kpis">
+      <div class="kpi hl">
+        <div class="kpi-val" id="kpiDesc">—</div>
+        <div class="kpi-lbl">Caminhões/hh (Descarga)</div>
+      </div>
+      <div class="kpi hl">
+        <div class="kpi-val" id="kpiCargGay">—</div>
+        <div class="kpi-lbl">Gay/hh (Carga casterdeck)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpiRepAbj">—</div>
+        <div class="kpi-lbl">Pcts/hh Rep abaixo</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val" id="kpiRepEsc">—</div>
+        <div class="kpi-lbl">Pcts/hh Rep escada</div>
+      </div>
+    </div>
+    <div class="res-table-wrap">
+      <div id="tableContainer">
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p>Preencha os dados operacionais para ver a produtividade de cada subprocesso.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script>
+/* ── Helpers ──────────────────────────────────────────────────────────── */
+function n(id){ return parseFloat(document.getElementById(id).value) || 0; }
+function fmt(v){
+  if(v == null || isNaN(v) || v <= 0) return '—';
+  var r = Math.round(v * 10) / 10;
+  return r.toLocaleString('pt-BR', {minimumFractionDigits: r % 1 === 0 ? 0 : 1, maximumFractionDigits: 1});
+}
+function fmt2(v){ if(v == null || isNaN(v) || v <= 0) return '—'; return (Math.round(v*10)/10).toFixed(1); }
+
+/* ── Cálculo principal ────────────────────────────────────────────────── */
+function calcular(){
+  var ppcam    = n('ppcam');
+  var distBuf  = n('distBuffer');
+  var distCast = n('distCast');
+  var occStr   = document.getElementById('occ').value;
+  var occ      = occStr === '' ? null : parseFloat(occStr) / 100;
+  var sppGay   = n('sppGaylord');
+  var sppGG    = n('sppGG');
+  var sppGL    = n('sppGL');
+
+  if(!ppcam || !distBuf || !distCast || occ === null || isNaN(occ) || !sppGay || !sppGG || !sppGL) return;
+
+  /* ── Capacidades (linha 12) ───────────────────────────────────────── */
+  // B12 = 3600 / ((60.80967 + 1.26*distBuffer)*24*1.12)   — Caminhões/hh
+  var capDesc    = 3600 / ((60.80967 + 1.26 * distBuf) * 24 * 1.12);
+
+  // C12 = 3600 / ((55.8 + 6.948*sppGay*(1-occ))*1.12)    — Gaylords/hh
+  var capOptGay  = 3600 / ((55.8 + 6.948 * sppGay * (1 - occ)) * 1.12);
+
+  // D12 = 93.46027315 (estático)                          — Lâminas/hh
+  var capAbast   = 93.46027315;
+
+  // E12 = 3600 / ((32.22 + 1.152*distCast)*1.12)          — Gaylords/hh
+  var capCargGay = 3600 / ((32.22 + 1.152 * distCast) * 1.12);
+
+  // F12 = 538.5146 / sppGG                                — Lâminas/hh
+  var capRepAbj  = 538.5146 / sppGG;
+
+  // G12 = 3600 / ((4.536*sppGG + 3.816*sppGL + 7.662)*1.12)   — Lâminas/hh
+  var capRepEsc  = 3600 / ((4.536 * sppGG + 3.816 * sppGL + 7.662) * 1.12);
+
+  // H12 = 31.80773988 (estático)                          — Lâminas/hh
+  var capCerrar  = 31.80773988;
+
+  // I12 = 38.96103896 (estático)                          — Lâminas/hh
+  var capTrasl   = 38.96103896;
+
+  /* ── Produtividade (linha 14 — pcts/hh) ──────────────────────────── */
+  var phDesc     = capDesc    * ppcam;
+  var phOptGay   = capOptGay  * sppGay;
+  var phCargGay  = capCargGay * sppGay;
+  var phRepAbj   = capRepAbj  * (sppGG + sppGL);
+  var phRepEsc   = capRepEsc  * (sppGG + sppGL);
+  var phTrasl    = (capTrasl * 4 * sppGay) + sppGG + sppGL;
+
+  /* ── KPIs ─────────────────────────────────────────────────────────── */
+  document.getElementById('kpiDesc').textContent    = fmt2(capDesc);
+  document.getElementById('kpiCargGay').textContent = fmt2(capCargGay);
+  document.getElementById('kpiRepAbj').textContent  = fmt(phRepAbj);
+  document.getElementById('kpiRepEsc').textContent  = fmt(phRepEsc);
+
+  /* ── Tabela ──────────────────────────────────────────────────────── */
+  var grupos = [
+    {
+      grp: '✈️  Descarga de Caminhão',
+      rows:[
+        {nome:'Descarga caminhão', cap:fmt2(capDesc)+' cam/hh', ph:phDesc}
+      ]
+    },
+    {
+      grp: '⚙️  Otimização de Gaylords no Piso',
+      rows:[
+        {nome:'Otimização de gaylord no piso', cap:fmt2(capOptGay)+' gay/hh', ph:phOptGay}
+      ]
+    },
+    {
+      grp: '🤖  Abastecimento / Carga Manual',
+      rows:[
+        {nome:'Abastecer lâmina na ilha', cap:fmt2(capAbast)+' lâm/hh', ph:null},
+        {nome:'Carga de gaylord no casterdeck', cap:fmt2(capCargGay)+' gay/hh', ph:phCargGay}
+      ]
+    },
+    {
+      grp: '🔧  Otimização de Lâmina',
+      rows:[
+        {nome:'Rep abaixo', cap:fmt2(capRepAbj)+' lâm/hh', ph:phRepAbj},
+        {nome:'Rep escada + casterdeck', cap:fmt2(capRepEsc)+' lâm/hh', ph:phRepEsc}
+      ]
+    },
+    {
+      grp: '📦  Fechar Lâmina',
+      rows:[
+        {nome:'Fechar lâmina', cap:fmt2(capCerrar)+' lâm/hh', ph:null}
+      ]
+    },
+    {
+      grp: '🚛  Traslado de Lâminas',
+      rows:[
+        {nome:'Traslado de lâminas', cap:fmt2(capTrasl)+' lâm/hh', ph:phTrasl}
+      ]
+    }
+  ];
+
+  var html = '<table class="res-table animate"><thead><tr>';
+  html += '<th>Subprocesso</th><th>Capacidade</th><th>Prod. (pcts/hh)</th>';
+  html += '</tr></thead><tbody>';
+
+  grupos.forEach(function(g){
+    html += '<tr class="group-hdr"><td colspan="3">'+g.grp+'</td></tr>';
+    g.rows.forEach(function(r){
+      var phHtml = (r.ph == null) ? '<span style="color:var(--gray)">—</span>' : fmt(r.ph);
+      html += '<tr>';
+      html += '<td>'+r.nome+'</td>';
+      html += '<td><span style="font-size:10px;color:var(--gray)">'+r.cap+'</span></td>';
+      html += '<td>'+phHtml+'</td>';
+      html += '</tr>';
+    });
+  });
+  html += '</tbody></table>';
+  document.getElementById('tableContainer').innerHTML = html;
+}
+
+window.addEventListener('load', calcular);
+</script>
+</body>
+</html>
